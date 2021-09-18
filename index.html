@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.4.0/lib/p5.js"></script>
+</head>
+
+<body>
+    <script>
+
+        const words = [] // store word objects
+
+        function setup() {
+            createCanvas(800, 400)
+            background(0)
+
+            const str = 'Hello, world! Hi, there! Nice to meet you!'
+            const wordsStr = str.split(' ')
+
+            textSize(48)
+
+            // track word position
+            let x = 20
+            let y = 60
+            fill(255)
+            // iterate over each word
+            for (let i = 0; i < wordsStr.length; i++) {
+                const wordStr = wordsStr[i] // get current word
+                const wordStrWidth = textWidth(wordStr) // get current word width
+                const word = new Word(wordStr, x, y, i)
+                words.push(word)
+                x = x + wordStrWidth + textWidth(' ') // update x by word width + space character
+                // look ahead the next word - will it fit in the space? if not, line break
+                const nextWordStrWidth = textWidth(wordsStr[i+1]) || 0
+                if (x > width - nextWordStrWidth) {
+                    y += 40 // line height, sort of
+                    x = 20 // reset x position
+                }
+            }
+        }
+
+        function draw() {
+            background(0)
+
+            for (let i = 0; i < words.length; i++) {
+                const word = words[i] // retrieve word object
+                word.update()
+                word.display()
+            }
+            if (mouseIsPressed) {
+
+            }
+        }
+
+        function keyPressed() {
+            if (key === 'r') {
+                for (let word of words) word.spread()
+            } else if (key === ' ') {
+                for (let word of words) word.reset()
+            }
+        }
+
+
+        class Word {
+            constructor(word, x, y, idx) {
+                this.word = word
+                this.x = x
+                this.y = y
+                // target position is the same as current position at start
+                this.tx = this.x
+                this.ty = this.y
+                // original position
+                this.origx = this.x
+                this.origy = this.y
+                this.idx = idx
+                this.fcolor = color(255)
+            }
+
+            reset() {
+                this.tx = this.origx
+                this.ty = this.origy
+            }
+
+            spread() {
+                this.tx = random(width)
+                this.ty = random(height)
+            }
+
+            update() {
+                // move towards the target by 10% each time
+                this.x = lerp(this.x, this.tx, 0.1)
+                this.y = lerp(this.y, this.ty, 0.1)
+            }
+
+            display() {
+                fill(this.fcolor)
+                noStroke()
+                text(this.word, this.x, this.y)
+            }
+        }
+
+    </script>
+</body>
+</html>
