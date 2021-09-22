@@ -1,8 +1,9 @@
 {
   "messages": [
     {
-      "origin": 8182084210,
-      "dest":   8992093224,
+      "origin": "8182084210",
+      "dest":   "8992093224",
+      "encryption": "Public",
       "text": [
         {"txt":  "Hey Jimmy, "},
         {"txt":  "I'm so glad you were picked to leave Earth. You're so brave. Things are going"},

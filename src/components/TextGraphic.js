@@ -1,5 +1,6 @@
 import React from "react"
 import Sketch from "react-p5";
+import "@fontsource/titillium-web"
 
 let x = 50;
 let y = 50;
@@ -10,16 +11,20 @@ const TextGraphic = (props) => {
   const words = [] // store word objects
   let selectedWord = null;
   let selectedOffset = { x: 0, y: 0 }
+
+  const preload = (p5) => {
+    p5.fontRegular = p5.loadFont("titillium-web");
+  }
   const setup = (p5, canvasParentRef) => {
     // use parent to render the canvas in this ref
     // (without that p5 will render the canvas outside of your component)
-    p5.createCanvas(800, 400).parent(canvasParentRef);
+    p5.createCanvas(1184, 400).parent(canvasParentRef);
     p5.background(0)
     updateWords(p5);
   };
 
   const updateWords = (p5) => {
-    p5.textSize(48)
+    p5.textSize(24)
     // track word position
     let x = 20
     let y = 60
@@ -44,7 +49,7 @@ const TextGraphic = (props) => {
         // look ahead the next word - will it fit in the space? if not, line break
         const nextWordStrWidth = p5.textWidth(wordsStr[i+1]) || 0
         if (x > p5.width - nextWordStrWidth) {
-          y += p5.textAscent(words[0].word) // line height, sort of
+          y += p5.textAscent(words[0].word) + 10 // line height, sort of
           x = 20 // reset x position
         }
       }
@@ -99,7 +104,7 @@ const TextGraphic = (props) => {
         if (indx !== -1) {
           words.splice(indx, 1);
         } */
-        selectedWord.changeWord(p5.random(selectedWord.replacements));
+        selectedWord.changeWord(p5.random(selectedWord.replacements), p5);
       }
     }
     selectedWord = null;
@@ -121,6 +126,8 @@ const TextGraphic = (props) => {
       this.offsetY = this.y;
       // draggable
       this.draggable = draggable;
+      // is it in original state
+      this.origState = true;
       // what to replace
       this.replacements = replacements;
       this.idx = idx;
@@ -131,11 +138,14 @@ const TextGraphic = (props) => {
     reset() {
       this.tx = this.origx;
       this.ty = this.origy;
+      this.origState = true;
+
     }
 
     spread() {
       this.tx = this.p5.random(this.p5.width);
       this.ty = this.p5.random(this.p5.height);
+      this.origState = false;
     }
 
     update() {
@@ -159,18 +169,40 @@ const TextGraphic = (props) => {
       this.word = word;
       this.fColor = this.p5.color(0, 255, 0);
       let indx = words.indexOf(this);
+      // If for some reason the word can't be found.
       if (indx !== -1) {
-        for (let i = indx; i < words.length; i++) {
-          words[i].tx += 20;
-          words[i].ty += 20;
-        }
+        let x = this.origx
+        let y = this.origy;
+        if (this.origState) {
+          for (let i = indx; i < words.length; i++) {
+            const wordStrWidth = p5.textWidth(words[i].word); // get current word width
+            if (x + wordStrWidth > p5.width) {
+              y += p5.textAscent(words[0].word)
+              x = 20;
+            }
 
+            words[i].tx = x;
+            words[i].ty = y;
+            words[i].origx = x;
+            words[i].origy = y;
+
+            x = x + wordStrWidth + p5.textWidth(' ') // update x by word width + space character
+            // look ahead the next word - will it fit in the space? if not, line break
+            const nextWordStrWidth = p5.textWidth(words[i+1]) || 0
+            if (x > p5.width - nextWordStrWidth) {
+              y += p5.textAscent(words[0].word) + 10// line height, sort of
+              x = 20 // reset x position
+            } else {
+              y = y;
+            }
+          }
+        }
       }
 
     }
   }
 
-  return <Sketch setup={setup} draw={draw} keyPressed={keyPressed} mousePressed={mousePressed}
+  return <Sketch preload={preload} setup={setup} draw={draw} keyPressed={keyPressed} mousePressed={mousePressed}
                  mouseReleased={mouseReleased}/>;
 };
 
