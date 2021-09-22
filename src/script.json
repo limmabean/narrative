@@ -1,9 +1,33 @@
 {
   "messages": [
     {
-      "origin": "8182084210",
-      "dest":   "8992093224",
+      "key": 0,
+      "origin": "Office of Space Technology",
+      "dest": "Explorer's Director of Communications",
+      "encryption": "Matched Private",
+      "constant": true,
+      "text": [
+        {"txt": "Welcome Director of Communication, Your role is a critical one. All instantaneous communication from Earth comes through the entangled particle communication core located behind this terminal. The opposing entangled particle is located and controlled within the Office of Space Technology on Earth. All non-quantum forms of communication are bound by relativity and therefore take years to travel. This is the only relevant path of communication between Earth and the Explorer. To maintain public trust in the Explorer mission, the particle communication cores are available to the public and available to members of the Explorer mission. Quantum messages are decoded by the quantum computer on board based on a dictionary corpus. They are then shown on this terminal in the order of sending. \n"}
+      ]
+    },
+    {
+      "key": 1,
+      "origin": "Office of Space Technology",
+      "dest": "Explorer's Director of Communications",
+      "encryption": "Matched Private",
+      "constant": true,
+      "text": [
+        {
+          "txt": "Unknown to the public, the Explorer mission was created due to the current state of unstable powers acquiring fission weapons technology. Our predictive models place human annihilation on Earth at 40% in the next 30 years and 70% in the next 60. You role is to prevent panic on board, regardless of the status of civilization on Earth. The Explorer’s mission must not be stopped due to the annihilation of life on Earth. Messages from Space Technology officials will be annotated with an encryption key. Public messages are not annotated. Messages will be sent to this terminal before being sent to members of the Explorer mission. An AI has been constructed to assist you with adjusting messages so they do not cause panic. Red words and phrases may result in panic. Clicking and dragging them out of the terminal will replace them with safe phrases.Members of the Explorer mission are NOT TO KNOW about the censorship role of the Director of Communication."
+        }
+      ]
+    },
+    {
+      "key": 2,
+      "origin": "818x20f210",
+      "dest":   "899x2f9a224",
       "encryption": "Public",
+      "constant": false,
       "text": [
         {"txt":  "Hey Jimmy, "},
         {"txt":  "I'm so glad you were picked to leave Earth. You're so brave. Things are going"},
